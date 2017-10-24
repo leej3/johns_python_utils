@@ -16,7 +16,10 @@ def tmas(swarm_dir=None,job_id=None,files_of_interest=None,parallel_label='_[01]
                       sort_values('run'))
 
     files_text = [Path(x).read_text() for x in df_file_paths.query("run in @files_of_interest").paths]
-    print('\n\n\n'.join(files_text))
+    return files_text
+   
+    
+
     
 # if not job_id:
     #     job_id = '.*'
