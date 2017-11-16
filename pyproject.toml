@@ -1,0 +1,12 @@
+
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "johns_hpc_helpers"
+author = "John Lee"
+author-email = "johnleenimh@gmail.com"
+home-page = "github.com/leej3"
+classifiers = ["License :: OSI Approved :: MIT License"]
+

@@ -1,5 +1,5 @@
 # coding: utf-8
-
+__all__  = ['make_montage']
 from pathlib import Path
 def make_montage(ulay=None,olay=None,image_dir=None,output_dir=None,cbar='FreeSurfer_Seg_i255',opacity='4',montx='3',monty='1',blowup='1'):
     output_dir = Path(output_dir)

@@ -1,4 +1,9 @@
 # coding: utf-8
+__all__ = ['generate_freesurfer_command',
+            'generate_template_command',
+            'generate_subfield_command',
+            'generate_recon_swarm',
+            'make_swarm_path',]
 
 from pathlib import Path
 
