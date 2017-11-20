@@ -7,7 +7,7 @@ setup(name='johns_python_utils',
       author='John Lee',
       author_email='johnleenimh@gmail.com',
       license='MIT',
-      packages=['johns_hpc_helpers'],
+      packages=['johns_python_utils'],
       install_requires=[
           'pathlib',
           'sklearn',
