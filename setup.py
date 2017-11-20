@@ -1,9 +1,9 @@
 from setuptools import setup
 
-setup(name='johns_hpc_helpers',
+setup(name='johns_python_utils',
       version='0.1',
-      description='Some redundant scripts. Some very helpful scripts...',
-      url='http://github.com/johns_hpc_scripts',
+      description="some helper functions",
+      url="https://github.com/leej3/johns_python_utils.git",
       author='John Lee',
       author_email='johnleenimh@gmail.com',
       license='MIT',
