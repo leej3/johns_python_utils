@@ -37,3 +37,74 @@ def write_scan_fields(series,fieldnames):
             f.write(scan + '\t' + '\t'.join(series.loc[fieldnames]) + '\n')
     return None
 
+
+def obfuscate_acquisition_time(series,df_offset):
+    df_offset_row =  df_offset.loc[df_offset.participant_id == series.subject ,:]
+    series.AcquisitionDateTime = str(pd.to_datetime(series.AcquisitionDateTime) - pd.DateOffset(years = df_offset_row.offset_years.values[0]) + pd.Timedelta("%d days"%df_offset_row.offset_days.values[0]))
+    return series
+        
+    
+def remove_json_fields(j_in,fieldname_tuples):
+    """
+    Each field name should be  a tuple
+    """
+    for f in fieldname_tuples:
+        tmp = j_in
+        if isinstance(f,tuple):
+            for i,l in enumerate(f):
+                try:
+                    if i == (len(f)-1):
+                        del tmp[l]
+                    else:
+                        tmp[l]
+                        tmp = tmp[l]
+                except KeyError:
+                        pass
+#                         print(f, ' not found as a json field')
+                        
+                        
+        else:
+            try:
+                del tmp[f]
+            except KeyError:
+                        pass
+#                         print(f, ' not found as a json field')
+
+
+def delete_scan_json_fields(series,fieldname_tuples):
+    json_path = series.json_path
+    
+    with json_path.open() as j:    
+        data = json.load(j)
+    
+    remove_json_fields(data, fieldname_tuples)
+    json_path.write_text(json.dumps(data))
+    
+
+def test_remove_json_fields():
+    foo = {'a':{'b':{'c':20}},'d': 30}
+    fieldname_tuples = [('a','b','c')]
+    remove_json_fields(foo,fieldname_tuples)
+    assert foo =={'a': {'b': {}}, 'd': 30}
+
+    foo = {'a':{'b':{'c':20}},'d': 30}
+    fieldname_tuples = [('a','b','c'),'d']
+    remove_json_fields(foo,fieldname_tuples)
+    assert foo =={'a': {'b': {}}}
+    
+    foo = {'a':{'b':{'c':20}},'d': 30}
+    fieldname_tuples = ['d']
+    remove_json_fields(foo,fieldname_tuples)
+    assert foo =={'a': {'b': {'c': 20}}}
+    
+    foo = {'a':{'b':{'c':20}},'word': 30}
+    fieldname_tuples = ['word']
+    remove_json_fields(foo,fieldname_tuples)
+    assert foo =={'a': {'b': {'c': 20}}}
+
+    foo = {'a':{'b':{'c':20}},'d': 30}
+    fieldname_tuples = [('a','d')]
+    # some times fields are missing, this can be ignored
+    remove_json_fields(foo,fieldname_tuples)
+    assert foo == {'a': {'b': {'c': 20}}, 'd': 30}
+
